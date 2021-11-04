@@ -1,0 +1,39 @@
+library(dplyr)
+
+team_a <- filter(shots_data, team == "Team A")
+team_b <- filter(shots_data, team == "Team B")
+
+a_corner3 <- filter(team_a, x>22 & y <= 7.8 | x < -22 & y <= 7.8)
+b_corner3 <- filter(team_b, x>22 & y <= 7.8 | x < -22 & y <= 7.8)
+
+a_noncorner3 <- filter(team_a, y > 7.8 & sqrt(x^2+y^2) > 23.75)
+b_noncorner3 <- filter(team_b, y > 7.8 & sqrt(x^2+y^2) > 23.75)
+
+a_2pt <- filter(team_a, sqrt(x^2+y^2) <= 23.75 & x <= 22 & x >= -22)
+b_2pt <- filter(team_b, sqrt(x^2+y^2) <= 23.75 & x <= 22 & x >= -22)
+
+
+a_dist_2pt <- nrow(a_2pt)/nrow(team_a)
+a_dist_c3 <- nrow(a_corner3)/nrow(team_a)
+a_dist_nc3 <- nrow(a_noncorner3)/nrow(team_a)
+
+b_dist_2pt <- nrow(b_2pt)/nrow(team_b)
+b_dist_c3 <- nrow(b_corner3)/nrow(team_b)
+b_dist_nc3 <- nrow(b_noncorner3)/nrow(team_b)
+
+
+efg3 <- function(x, y){
+      z = x*1.5/y
+  }
+efg2 <- function(x, y){
+       z = x/y
+}
+
+
+a_efg_c3 <- efg3(sum(a_corner3$fgmade) ,nrow(a_corner3))
+a_efg_nc3 <- efg3(sum(a_noncorner3$fgmade) ,nrow(a_noncorner3))
+a_efg_2pt <- efg2(sum(a_2pt$fgmade) ,nrow(a_2pt))
+
+b_efg_c3 <- efg3(sum(b_corner3$fgmade) ,nrow(b_corner3))
+b_efg_nc3 <- efg3(sum(b_noncorner3$fgmade) ,nrow(b_noncorner3))
+b_efg_2pt <- efg2(sum(b_2pt$fgmade) ,nrow(b_2pt))
